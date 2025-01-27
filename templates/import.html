@@ -16,7 +16,7 @@
   <tbody>
     {% for file in files %}
     <tr>
-      <td>{{ file.name }}</td>
+      <td><a href="./{{ file.name }}">{{ file.name }}</a></td>
       <td>{{ file.time.replace(microsecond=0).isoformat(' ') }}</td>
       <td align="right">{{ file.size }}</td>
     </tr>

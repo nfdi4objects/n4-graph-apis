@@ -2,7 +2,7 @@ import json
 import re
 import sys
 import os
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, send_from_directory
 from waitress import serve
 import argparse
 import mimeparse
@@ -106,6 +106,7 @@ def repository():
 @app.route('/collection', defaults={'id': None, 'path': None})
 @app.route('/collection/', defaults={'id': None, 'path': None})
 @app.route('/collection/<int:id>', defaults={'path': None})
+@app.route('/collection/<int:id>/', defaults={'path': ""})
 @app.route('/collection/<int:id>/<path:path>')
 def collection(id, path):
     if not id:
@@ -115,14 +116,17 @@ def collection(id, path):
     format = request.args.get("format")
     html_wanted = "html" in request.headers["Accept"] or format == "html"
 
-    if path:
+    if path is not None:
         # TODO: move to library function and serve files as well
-        if path == "import" and app.config["import"].get("collections"):
+        if app.config["import"].get("collections"):
             abs_path = os.path.join(
                 app.config["import"]["collections"], str(id))
-            files = map(lambda f: file_info(abs_path, f), os.listdir(abs_path))
-            return render('import.html', files=files, id=id)
-            # return directory
+            if path == "":
+                files = map(lambda f: file_info(
+                    abs_path, f), os.listdir(abs_path))
+                return render('import.html', files=files, id=id)
+            else:
+                return send_from_directory(abs_path, path)
 
         # TODO: more beautiful message
         return "Not found!"
