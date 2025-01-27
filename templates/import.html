@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+<p>
+  This is an internal view for debugging the import of RDF data into the Knowledge Graph.
+  Import files of <a href="../../collection/{{ id }}">collection {{ id }}</a>:
+</p>
+<table class="dataTable">
+  <thead>
+    <tr>
+      <td>name</td>
+      <td>modified</th>
+      <td align="right">size</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for file in files %}
+    <tr>
+      <td>{{ file.name }}</td>
+      <td>{{ file.time.replace(microsecond=0).isoformat(' ') }}</td>
+      <td align="right">{{ file.size }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

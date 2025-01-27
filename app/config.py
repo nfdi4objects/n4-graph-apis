@@ -2,6 +2,7 @@ from collections import UserDict
 import yaml
 import glob
 import re
+import os
 import subprocess
 
 
@@ -37,6 +38,15 @@ class Config(UserDict):
             self.data["debug"] = True
         elif not "debug" in self.data:
             self.data["debug"] = False
+
+        if "import" in self.data:
+            for name in ["collections", "terminologies"]:
+                if name in self.data["import"]:
+                    path = self.data["import"][name]
+                    if not os.path.isdir(path):
+                        raise Exception(f"Missing {name} path: {path}")
+        else:
+            self.data["import"] = {}
 
         extend_examples(self.data["sparql"])
         if "cypher" in self.data:

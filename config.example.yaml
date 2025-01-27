@@ -23,3 +23,8 @@ cypher:
       query: "MATCH (n:E21_Person) RETURN n LIMIT 10"
     - name: List all classes (= node labels)
       query: "MATCH (n)\n RETURN distinct labels(n) AS classes, count(*) AS count"
+
+# link to import directores (see n4o-rdf-import)
+import:
+  collections: ../n4o-import/import
+  terminologies: ../n4o-import/import-voc
