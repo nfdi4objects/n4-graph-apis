@@ -1,16 +1,16 @@
-test:
+test: .venv
 	.venv/bin/python -m pytest
 
-deps:
+.venv: requirements.txt
 	python -m venv .venv
 	. .venv/bin/activate && pip install -r requirements.txt
 
-dev:
+dev: .venv
 	.venv/bin/python app.py --debug
 
-lint:
+lint: .venv
 	@.venv/bin/flake8 *.py app/*.py tests/*.py --select=E9,F63,F7,F82 --show-source --statistics
 	@.venv/bin/flake8 *.py app/*.py tests/*.py --ignore=C901 --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-fix:
+fix: .venv
 	@.venv/bin/autopep8 --in-place *.py app/*.py tests/*.py

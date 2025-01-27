@@ -4,8 +4,8 @@
 
 This repository implements public web APIs to the NFDI4Objects Knowledge Graph,
 available at <https://graph.nfdi4objects.net/>. The Knowledge Graph internally
-consists of an RDF Triple Store and a Labeled Property Graph. These databases
-can be queried [with SPARQL](#sparql-api) and [with
+consists of an RDF Triple Store and an experimental Labeled Property Graph.
+These databases can be queried [with SPARQL](#sparql-api) and [with
 Cypher](#property-graph-api) respectively using the API endpoints provided by
 this web application. In addition, collection URIs starting with
 <https://graph.nfdi4objects.net/collection/> are served as linked open data
@@ -33,8 +33,15 @@ Requires Python >= 3.5. Python modules are listed in `requirements.txt`. Use [de
 A local file `config.yaml` is needed with configuration. Use this as boilerplate:
 
 ~~~yaml
+sparql:
+  endpoint: http://localhost:3030/n4o-rdf-import/
+  examples:
+    - queries/*.rq
+    - name: List all classes
+      query: |
+        SELECT DISTINCT ?class WHERE { [] a ?class }  examples:
 cypher: 
-  uri: "bolt://localhost:7687"
+  uri: bolt://localhost:7687
   user: ""
   password: "" 
   timeout: 30
@@ -43,13 +50,6 @@ cypher:
       query: "MATCH (n:E21_Person) RETURN n LIMIT 10"
     - name: List all classes (= node labels)
       query: "MATCH (n)\n RETURN distinct labels(n) AS classes, count(*) AS count"
-sparql:
-  endpoint: "https://dbpedia.org/sparql"
-  examples:
-    - queries/*.rq
-    - name: List all classes
-      query: |
-        SELECT DISTINCT ?class WHERE { [] a ?class }  examples:
 ~~~
 
 Make sure the Neo4j (or compatible) database is read-only because this application only applies a simple filter to detect Cypher write queries!
@@ -133,7 +133,7 @@ Then locally run for testing:
 python app.py --help
 ~~~
 
-Alternatively run `make deps` and `make dev`.
+Alternatively run `make .venv` and `make dev`.
 
 Please run `make lint` to detect Python coding style violations and `make fix` to fix some of these violations. Some unit tests are run with `make test`.
 
