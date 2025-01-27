@@ -14,7 +14,7 @@
 <hr>
 {% set homepage = graph.objects(URIRef(uri), URIRef("http://xmlns.com/foaf/0.1/homepage")).__next__() %}
 {% if homepage %}
-<p>Homepage: <a href="{{homepage}}">{{homepage}}</a></p>
+<p>Homepage/URL: <a href="{{homepage}}">{{homepage}}</a></p>
 {% endif %}
 <p>Quell-Repository: <a data-sparql-value="SELECT ?r FROM <https://graph.nfdi4objects.net/collection/> { ?r <http://www.w3.org/ns/dcat#dataset> <{{uri}}> }">?</a></p>
 {% set license = graph.objects(URIRef(uri), URIRef("http://purl.org/dc/terms/license")).__next__() %}
