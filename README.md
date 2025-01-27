@@ -17,6 +17,8 @@ For background information see the [Knowledge Graph Manual](https://nfdi4objects
 
 - [Installation](#installation)
 - [Configuration](#configuration)
+  - [SPARQL](#sparql)
+  - [Cypher](#cypher)
 - [Usage](#usage)
   - [SPARQL API](#sparql-api)
   - [Property Graph API](#property-graph-api)
@@ -26,13 +28,34 @@ For background information see the [Knowledge Graph Manual](https://nfdi4objects
 
 ## Installation
 
-Requires Python >= 3.5. Python modules are listed in `requirements.txt`. Use [deployment method of your choice](https://flask.palletsprojects.com/en/2.0.x/deploying/#self-hosted-options). The application must be configured first.
+Requires Python >= 3.5. Python modules are listed in `requirements.txt`. Use [deployment method of your choice](https://flask.palletsprojects.com/en/2.0.x/deploying/#self-hosted-options).
+
 
 ## Configuration
 
 A local file `config.yaml` is needed with configuration. See [`config.example.yaml`](config.example.yaml) as boilerplate and documentation.
 
-When using Neo4j (or compatible) make sure the database is read-only because this application only applies a simple filter to detect Cypher write queries!
+### SPARQL
+
+The default configuration expects a SPARL endpoint at <http://localhost:3030/n4o-rdf-import/>. This can be provided with Fuseki triple store and a database `n4o-rdf-import` locally created like this:
+
+~~~sh
+curl --data "dbName=n4o-rdf-import&dbType=tdb2" http://localhost:3030/$/datasets
+~~~
+
+The RDF database is expected to be grouped in named graphs:
+
+- Graph `https://graph.nfdi4objects.net/collection/> contains information about collections
+- Graphs `https://graph.nfdi4objects.net/collection/X` where X is an integer contain information from individual collections
+- Graph `https://graph.nfdi4objects.net/terminology/` contains information about terminologies
+- Graphs `http://bartoc.org/en/node/X` where X is an integer contain information from individual terminologies
+- The default graph must be configured as union graph.
+
+See <https://github.com/nfdi4objects/n4o-import> for additional information to set up, initialize and fill the Triple Store.
+
+### Cypher
+
+The Cypher backend is optional. When using Neo4j (or compatible) make sure the database is read-only because this application only applies a simple filter to detect Cypher write queries!
 
 ## Usage
 
