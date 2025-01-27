@@ -1,0 +1,25 @@
+# run in debug mode to emit more debugging information
+debug: false
+
+# SPARQL endpoint and examples (required)
+sparql:
+  endpoint: http://localhost:3030/n4o-rdf-import/
+  examples:
+    # examples given in files
+    - queries/*.rq
+    # example given in config file
+    - name: List all classes
+      query: |
+        SELECT DISTINCT ?class WHERE { [] a ?class }  examples:
+
+# Cypher endpoint and examples (optional)
+cypher:
+  uri: bolt://localhost:7687
+  user: ""
+  password: ""
+  timeout: 30
+  examples:
+    - name: Get some people
+      query: "MATCH (n:E21_Person) RETURN n LIMIT 10"
+    - name: List all classes (= node labels)
+      query: "MATCH (n)\n RETURN distinct labels(n) AS classes, count(*) AS count"

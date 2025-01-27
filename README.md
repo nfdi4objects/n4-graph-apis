@@ -30,29 +30,9 @@ Requires Python >= 3.5. Python modules are listed in `requirements.txt`. Use [de
 
 ## Configuration
 
-A local file `config.yaml` is needed with configuration. Use this as boilerplate:
+A local file `config.yaml` is needed with configuration. See [`config.example.yaml`](config.example.yaml) as boilerplate and documentation.
 
-~~~yaml
-sparql:
-  endpoint: http://localhost:3030/n4o-rdf-import/
-  examples:
-    - queries/*.rq
-    - name: List all classes
-      query: |
-        SELECT DISTINCT ?class WHERE { [] a ?class }  examples:
-cypher: 
-  uri: bolt://localhost:7687
-  user: ""
-  password: "" 
-  timeout: 30
-  examples:
-    - name: Get some people
-      query: "MATCH (n:E21_Person) RETURN n LIMIT 10"
-    - name: List all classes (= node labels)
-      query: "MATCH (n)\n RETURN distinct labels(n) AS classes, count(*) AS count"
-~~~
-
-Make sure the Neo4j (or compatible) database is read-only because this application only applies a simple filter to detect Cypher write queries!
+When using Neo4j (or compatible) make sure the database is read-only because this application only applies a simple filter to detect Cypher write queries!
 
 ## Usage
 

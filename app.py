@@ -1,7 +1,4 @@
 import json
-import yaml
-import glob
-import subprocess
 import re
 import sys
 from flask import Flask, render_template, request, make_response
@@ -11,7 +8,7 @@ import mimeparse
 import traceback
 from rdflib import URIRef
 
-from app import CypherBackend, SparqlProxy, ApiError
+from app import CypherBackend, SparqlProxy, ApiError, Config
 
 
 def jsonify(data, status=200, indent=3, sort_keys=False):
@@ -25,13 +22,12 @@ def jsonify(data, status=200, indent=3, sort_keys=False):
 
 
 app = Flask(__name__)
-githash = None
 
 
 def render(template, **vars):
+    # TODO: better title?
     title = template.split(".")[0]
-    # TODO: add title
-    return render_template(template, title=title, githash=githash, **vars)
+    return render_template(template, title=title, githash=app.config["githash"], **vars)
 
 
 @app.errorhandler(ApiError)
@@ -182,19 +178,6 @@ def sparql_form():
     return render('sparql.html', **config["sparql"])
 
 
-def extend_examples(examples):
-    extended = []
-    for ex in examples:
-        if isinstance(ex, str):
-            for file in glob.glob(ex):
-                lines = open(file).read().split("\n")
-                name = re.sub(r"^#\s*", "", lines[0])
-                extended.append({"name": name, "query": "\n".join(lines)})
-        else:
-            extended.append(ex)
-    return extended
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--port', type=int,
@@ -206,38 +189,21 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--debug', action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
 
-    opts = {"port": args.port}
-    if args.debug:
-        opts["debug"] = True
-
-    with open(args.config) as stream:
-        try:
-            config = yaml.safe_load(stream)
-        except yaml.YAMLError as err:
-            msg = "Error in %s" % (args.config)
-            if hasattr(err, 'problem_mark'):
-                mark = err.problem_mark
-                msg += " at line %s char %s" % (mark.line + 1, mark.column + 1)
-            print(msg, file=sys.stderr)
-            sys.exit(1)
-        config["sparql"]["examples"] = extend_examples(
-            config["sparql"]["examples"])
-        config["cypher"]["examples"] = extend_examples(
-            config["cypher"]["examples"])
+    try:
+        config = Config(args.config, args.debug)
+    except Exception as err:
+        print(str(err), file=sys.stderr)
+        sys.exit(1)
 
     for key in config.keys():
         app.config[key] = config[key]
-    app.config["cypher-backend"] = CypherBackend(config['cypher'])
+
     app.config["sparql-proxy"] = SparqlProxy(
-        config["sparql"]["endpoint"], args.debug)
-    app.config["debug"] = args.debug
+        config["sparql"]["endpoint"], config["debug"])
+    if "cypher" in config:
+        app.config["cypher-backend"] = CypherBackend(config['cypher'])
 
-    try:
-        githash = subprocess.run(['git', 'rev-parse', '--short=8', 'HEAD'],
-                                 stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
-    except Exception:
-        pass
-
+    opts = {"port": args.port, "debug": config["debug"]}
     if args.wsgi:
         serve(app, host="0.0.0.0", **opts)
     else:
