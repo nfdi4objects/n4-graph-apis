@@ -13,6 +13,7 @@
         <a href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/#query-operation">SPARQL</a> query API
         to the <b><a href="sparql">RDF triple store</a></b>
         at <code>/api/sparql</code>
+        (see <a href="https://sparqlexplorer.app/#/?endpoint=https%3A%2F%2Fgraph.nfdi4objects.net%2Fapi%2Fsparql">SPARQLExplorer</a> for inspection).
       </p>
     </li>
     <li>
@@ -24,13 +25,15 @@
         <a href="https://bartoc.org/">http://bartoc.org/en/node/</a> namespace.
       </p>
     </li>
-    <!--li>
+    {% if config.cypher %}
+    <li>
       <p>
         experimental <a href="https://github.com/nfdi4objects/n4o-graph-apis#cypher-property-graph-api">Cypher Property Graph API</a>
         to a <b><a href="cypher">Labeled Property Graph</a></b>
         at <code>/api/cypher</code>
       </p>
-    </li-->
+    </li>
+    {% endif %}
   </ul>
   <p>
     Please consult <b><a href="https://nfdi4objects.github.io/n4o-graph/">the manual</a></b>

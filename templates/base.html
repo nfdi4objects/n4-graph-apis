@@ -34,6 +34,15 @@
             <a class="nav-link" href="{{url_for('sparql_form')}}">SPARQL</a>
           {% endif %}
         </li>
+        {% if config.cypher %}
+        <li>
+           {% if request.path.startswith("/cypher") %}
+              <a class="nav-link selected" href="{{url_for('cypher_form')}}">Cypher</a>
+            {% else %}
+              <a class="nav-link" href="{{url_for('cypher_form')}}">Cypher</a>
+            {% endif %}
+        </li>
+        {% endif %}
         <li class="nav-item">
           {% if request.path.startswith("/collection") %}
             <a class="nav-link selected" href="{{url_for('collection')}}">Collections</a>
@@ -55,13 +64,6 @@
             <a class="nav-link" href="{{url_for('terminology')}}">Terminologies</a>
           {% endif %}
         </li>
-        <!--li>
-           {% if request.path.startswith("/cypher") %}
-              <a class="nav-link selected" href="{{url_for('cypher_form')}}">Cypher</a>
-            {% else %}
-              <a class="nav-link" href="{{url_for('cypher_form')}}">Cypher</a>
-            {% endif %}
-        </li-->
         <li class="nav-item">
           <a class="nav-link" href="https://nfdi4objects.github.io/n4o-graph/">Manual</a>
         </li>
