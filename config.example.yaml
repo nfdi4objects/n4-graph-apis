@@ -24,7 +24,7 @@ cypher:
     - name: List all classes (= node labels)
       query: "MATCH (n)\n RETURN distinct labels(n) AS classes, count(*) AS count"
 
-# link to import directores (see n4o-rdf-import)
+# link to import stage directories (see n4o-rdf-import)
 import:
-  collections: ../n4o-import/import
-  terminologies: ../n4o-import/import-voc
+  collections: ../n4o-import/stage
+  terminologies: ../n4o-import/stage-voc
