@@ -25,7 +25,7 @@ cypher:
       query: "MATCH (n)\n RETURN distinct labels(n) AS classes, count(*) AS count"
 
 # link to import stage directories (see n4o-rdf-import, optional)
-import: ../n4o-import/stage
+stage: ../n4o-import/stage
 
 # Links to tools and references (optional)
 tools:

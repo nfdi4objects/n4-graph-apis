@@ -32,8 +32,8 @@ FROM <{{uri}}> WHERE {
   ?s ?property ?o
 } GROUP BY ?property ORDER BY DESC(?count)">used properties</a>.
 </p> 
-{% if report %}
-<p>See <a href="{{ report }}">import report</a>.</p>
+{% if stage %}
+<p>See <a href="{{ stage }}">import report</a>.</p>
 {% endif %}
 <hr><!-- TODO: syntax highlight RDF/Turtle -->
 <pre><code>

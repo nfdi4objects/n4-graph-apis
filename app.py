@@ -116,16 +116,16 @@ def collection(id, path):
     format = request.args.get("format")
     html_wanted = "html" in request.headers["Accept"] or format == "html"
 
-    report_base = app.config.get("import")
-    report_path = os.path.join(report_base, str(id)) if report_base else None
+    stage_base = app.config.get("stage")
+    stage_path = os.path.join(stage_base, str(id)) if stage_base else None
     if path is not None:
-        if report_base:
+        if stage_base:
             if path == "":
-                files = map(lambda f: file_info(report_path, f),
-                            os.listdir(report_path))
+                files = map(lambda f: file_info(stage_path, f),
+                            os.listdir(stage_path))
                 return render('import.html', files=files, id=id)
             else:
-                return send_from_directory(report_path, path)
+                return send_from_directory(stage_path, path)
         # TODO: more beautiful message
         return "Not found!"
 
@@ -136,9 +136,9 @@ def collection(id, path):
 
     if html_wanted:
         if len(graph) > 0:
-            report = "./" + \
-                str(id) + "/" if report_path and os.path.isdir(report_path) else None
-            return render('collection.html', uri=uri, graph=graph, report=report)
+            stage = "./" + \
+                str(id) + "/" if stage_path and os.path.isdir(stage_path) else None
+            return render('collection.html', uri=uri, graph=graph, stage=stage)
         else:
             return render('collection.html', uri=uri, graph=None), 404
     else:
