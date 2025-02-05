@@ -3,9 +3,10 @@ test: .venv
 
 .venv: requirements.txt
 	python -m venv .venv
-	. .venv/bin/activate && pip install -r requirements.txt
+	.venv/bin/pip install -r requirements.txt
 
 dev: .venv
+	.venv/bin/pip install -r requirements-dev.txt
 	.venv/bin/python app.py --debug
 
 lint: .venv
@@ -14,3 +15,6 @@ lint: .venv
 
 fix: .venv
 	@.venv/bin/autopep8 --in-place *.py app/*.py tests/*.py
+
+container:
+	@docker build -t n4o-graph-apis .

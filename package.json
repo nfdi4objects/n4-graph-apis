@@ -2,8 +2,8 @@
   "type": "module",
   "scripts": {
     "lint": "eslint --fix './static/*-gui.js'"
-   },
-   "devDependencies": {
+  },
+  "devDependencies": {
     "eslint": "^8.57.0"
   }
 }

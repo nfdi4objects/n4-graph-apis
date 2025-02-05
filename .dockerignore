@@ -1,0 +1,9 @@
+# sources not required in production
+tests
+Makefile
+
+# node
+node_modules
+eslint.config.js
+package.json
+package-lock.json

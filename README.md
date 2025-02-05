@@ -28,12 +28,27 @@ For background information see the [Knowledge Graph Manual](https://nfdi4objects
 
 ## Installation
 
-Requires Python >= 3.5. Python modules are listed in `requirements.txt`. Use [deployment method of your choice](https://flask.palletsprojects.com/en/2.0.x/deploying/#self-hosted-options).
+Requires Python >= 3.5. Python modules are listed in `requirements.txt`.
 
+For running with docker you need a Docker image. By now it must be build locally [as described below](#development) but we are going to provide build images.
+
+A backend API (SPARQL and optional Neo4J/Cypher) must be available and [configured](#configuration).
+
+## Installation
+
+Use [deployment method of your choice](https://flask.palletsprojects.com/en/2.0.x/deploying/#self-hosted-options) or Docker.
+
+A Docker container can be run with local configuration file mounted into the container, and access to the network enabled:
+
+~~~sh
+docker run --rm --net=host -p 8000:8000 -v ./config.yaml:/app/config.yaml:ro n4o-graph-apis
+~~~
+
+For deployment better use a file `docker-compose.yml` (will be documented later).
 
 ## Configuration
 
-A local file `config.yaml` is needed with configuration. See [`config.example.yaml`](config.example.yaml) as boilerplate and documentation.
+A local file `config.yaml` is needed with configuration. See [`config.example.yaml`](config.example.yaml) as boilerplate and documentation. Configuration is only loaded once at startup.
 
 ### SPARQL
 
@@ -128,6 +143,7 @@ To locally run the application first install required Python dependencies with v
 python -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ~~~
 
 Then locally run for testing:
@@ -141,6 +157,8 @@ Alternatively run `make .venv` and `make dev`.
 Please run `make lint` to detect Python coding style violations and `make fix` to fix some of these violations. Some unit tests are run with `make test`.
 
 To populate the configured knowledge graph databases with actual data, see the source code repository <https://github.com/nfdi4objects/n4o-import>.
+
+To locally build the Docker image run `make container`.
 
 ## License
 

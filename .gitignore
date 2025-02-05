@@ -1,10 +1,12 @@
-data/
+# python
 __pycache__/
-bin/
-lib/
 pyvenv.cfg
 .venv/
-node_modules/
+
+# node
+node_modules
+package-lock.json
+
+# config files
 neo4j.json
 config.yaml
-work/

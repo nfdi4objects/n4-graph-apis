@@ -11,6 +11,3 @@ rdflib
 SPARQLWrapper
 python-mimeparse
 
-# development
-flake8
-autopep8
