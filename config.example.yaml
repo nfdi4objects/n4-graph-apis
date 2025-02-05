@@ -24,12 +24,10 @@ cypher:
     - name: List all classes (= node labels)
       query: "MATCH (n)\n RETURN distinct labels(n) AS classes, count(*) AS count"
 
-# link to import stage directories (see n4o-rdf-import)
-import:
-  collections: ../n4o-import/stage
-  terminologies: ../n4o-import/stage-voc
+# link to import stage directories (see n4o-rdf-import, optional)
+import: ../n4o-import/stage
 
-# Link to tools
+# Links to tools and references (optional)
 tools:
   - name: LIDO-Schulung
     url: https://docs.nfdi4culture.de/lido-schulung
