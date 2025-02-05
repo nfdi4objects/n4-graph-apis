@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <ul>
+    {% for tool in config.tools %}
+      <li>
+        <a href="{{ tool.url }}">{{ tool.name }}</a>{% if tool.description %}:
+        {{ tool.description }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
