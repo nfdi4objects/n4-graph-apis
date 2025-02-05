@@ -36,7 +36,7 @@ class Config(UserDict):
 
         if debug:
             self.data["debug"] = True
-        elif not "debug" in self.data:
+        elif "debug" not in self.data:
             self.data["debug"] = False
 
         if "import" in self.data:
@@ -52,12 +52,12 @@ class Config(UserDict):
         if "cypher" in self.data:
             extend_examples(self.data["cypher"])
 
-        if not "tools" in self.data:
+        if "tools" not in self.data:
             self.data["tools"] = []
 
         try:
             self.data["githash"] = subprocess.run(['git', 'rev-parse', '--short=8', 'HEAD'],
                                                   stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
-        except Exception as e:
+        except Exception:
             self.data["githash"] = None
             pass

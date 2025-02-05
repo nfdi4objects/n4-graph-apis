@@ -65,7 +65,7 @@ class SparqlProxy:
         out.status_code = res.status_code
         return out
 
-    def request(self, query, params):
+    def request(self, query, params={}):
         self.wrapper.setQuery(query)
         for name in ["default-graph-uri", "named-graph-uri"]:
             if name in params:
@@ -73,3 +73,6 @@ class SparqlProxy:
             else:
                 self.wrapper.clearParameter(name)
         return self.wrapper.queryAndConvert()
+
+    def alive(self):
+        return self.request("ASK WHERE { ?s ?p ?o . }")

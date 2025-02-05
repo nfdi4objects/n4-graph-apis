@@ -212,6 +212,11 @@ def tools():
     return render('tools.html')
 
 
+def quit(msg):
+    print(msg, file=sys.stderr)
+    sys.exit(1)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--port', type=int,
@@ -226,15 +231,21 @@ if __name__ == '__main__':
     try:
         config = Config(args.config, args.debug)
     except Exception as err:
-        print(str(err), file=sys.stderr)
-        sys.exit(1)
+        quit(str(err))
 
     for key in config.keys():
         app.config[key] = config[key]
 
-    app.config["sparql-proxy"] = SparqlProxy(
-        config["sparql"]["endpoint"], config["debug"])
+    endpoint = config["sparql"]["endpoint"]
+    app.config["sparql-proxy"] = SparqlProxy(endpoint, config["debug"])
+    try:
+        app.config["sparql-proxy"].alive()
+    except Exception:
+        quit(f"SPARQL endpoint {endpoint} is not available!")
+
     if "cypher" in config:
+        # TODO: check if backend is alive, else exit
+        print(f"Using Cypher backend {config['cypher']['uri']}")
         app.config["cypher-backend"] = CypherBackend(config['cypher'])
 
     opts = {"port": args.port, "debug": config["debug"]}
