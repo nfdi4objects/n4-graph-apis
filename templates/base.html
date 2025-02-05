@@ -64,6 +64,15 @@
             <a class="nav-link" href="{{url_for('terminology')}}">Terminologies</a>
           {% endif %}
         </li>
+        {% if config.tools %}
+        <li class="nav-item">
+          {% if request.path.startswith("/tools") %}
+            <a class="nav-link selected" href="{{url_for('tools')}}">Tools</a>
+          {% else %}
+            <a class="nav-link" href="{{url_for('tools')}}">Tools</a>
+          {% endif %}
+        </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="https://nfdi4objects.github.io/n4o-graph/">Manual</a>
         </li>

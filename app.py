@@ -206,6 +206,9 @@ def cypher_form():
 def sparql_form():
     return render('sparql.html', **config["sparql"])
 
+@app.route('/tools')
+def tools():
+    return render('tools.html')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

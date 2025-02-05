@@ -52,6 +52,9 @@ class Config(UserDict):
         if "cypher" in self.data:
             extend_examples(self.data["cypher"])
 
+        if not "tools" in self.data:
+            self.data["tools"] = []
+
         try:
             self.data["githash"] = subprocess.run(['git', 'rev-parse', '--short=8', 'HEAD'],
                                                   stdout=subprocess.PIPE).stdout.decode('utf-8').strip()

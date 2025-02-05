@@ -28,3 +28,9 @@ cypher:
 import:
   collections: ../n4o-import/stage
   terminologies: ../n4o-import/stage-voc
+
+# Link to tools
+tools:
+  - name: LIDO-Schulung
+    url: https://docs.nfdi4culture.de/lido-schulung
+    description: Einführung in das LIDO-Format
