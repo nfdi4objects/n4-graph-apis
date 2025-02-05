@@ -116,18 +116,16 @@ def collection(id, path):
     format = request.args.get("format")
     html_wanted = "html" in request.headers["Accept"] or format == "html"
 
+    report_base = app.config.get("import")
+    report_path = os.path.join(report_base, str(id)) if report_base else None
     if path is not None:
-        # TODO: move to library function and serve files as well
-        if app.config["import"].get("collections"):
-            abs_path = os.path.join(
-                app.config["import"]["collections"], str(id))
+        if report_base:
             if path == "":
-                files = map(lambda f: file_info(
-                    abs_path, f), os.listdir(abs_path))
+                files = map(lambda f: file_info(report_path, f),
+                            os.listdir(report_path))
                 return render('import.html', files=files, id=id)
             else:
-                return send_from_directory(abs_path, path)
-
+                return send_from_directory(report_path, path)
         # TODO: more beautiful message
         return "Not found!"
 
@@ -138,7 +136,9 @@ def collection(id, path):
 
     if html_wanted:
         if len(graph) > 0:
-            return render('collection.html', uri=uri, graph=graph)
+            report = "./" + \
+                str(id) + "/" if report_path and os.path.isdir(report_path) else None
+            return render('collection.html', uri=uri, graph=graph, report=report)
         else:
             return render('collection.html', uri=uri, graph=None), 404
     else:
@@ -206,9 +206,11 @@ def cypher_form():
 def sparql_form():
     return render('sparql.html', **config["sparql"])
 
+
 @app.route('/tools')
 def tools():
     return render('tools.html')
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

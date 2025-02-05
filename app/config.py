@@ -19,7 +19,7 @@ def extend_examples(api):
                 extended.append(ex)
         api["examples"] = extended
     else:
-        ap["examples"] = []
+        api["examples"] = []
 
 
 class Config(UserDict):
