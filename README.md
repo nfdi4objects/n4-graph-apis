@@ -158,7 +158,7 @@ Please run `make lint` to detect Python coding style violations and `make fix` t
 
 To populate the configured knowledge graph databases with actual data, see the source code repository <https://github.com/nfdi4objects/n4o-import>.
 
-To locally build the Docker image run `make container`.
+To locally build the Docker image run `make docker`.
 
 ## License
 

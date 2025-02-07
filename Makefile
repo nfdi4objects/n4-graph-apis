@@ -16,5 +16,5 @@ lint: .venv
 fix: .venv
 	@.venv/bin/autopep8 --in-place *.py app/*.py tests/*.py
 
-container:
+docker:
 	@docker build -t n4o-graph-apis .
