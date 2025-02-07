@@ -1,0 +1,10 @@
+services:
+  graph-apis:
+    image: ${IMAGE:-ghcr.io/nfdi4objects/n4o-graph-apis:main}
+    volumes:
+      - ${CONFIG:-./config.yaml}:/app/config.yaml:ro
+      - ${STAGE:-./stage}:/app/stage:ro
+    ports: # TODO: this is ignored on network_mode: host!
+      - ${PORT:-8000}:8000
+    container_name: ${CONTAINER:-n4o-graph-apis}
+    network_mode: host

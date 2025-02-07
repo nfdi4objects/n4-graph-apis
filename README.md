@@ -3,18 +3,18 @@
 > API and minimal web interface to the NFDI4Objects Knowledge Graph (N4O KG)
 
 This repository implements public web APIs to the NFDI4Objects Knowledge Graph,
-available at <https://graph.nfdi4objects.net/>. The Knowledge Graph internally
-consists of an RDF Triple Store and an experimental Labeled Property Graph.
-These databases can be queried [with SPARQL](#sparql-api) and [with
+available at <https://graph.nfdi4objects.net/>. The Knowledge Graph database
+can be queried [with SPARQL](#sparql-api) and (if configured) [with
 Cypher](#property-graph-api) respectively using the API endpoints provided by
 this web application. In addition, collection URIs starting with
-<https://graph.nfdi4objects.net/collection/> are served as linked open data
-from the triple store.
+<https://graph.nfdi4objects.net/collection/> are served as linked open data and
+import reports can be inspected.
 
-For background information see the [Knowledge Graph Manual](https://nfdi4objects.github.io/n4o-graph/) (in German).
+For additional information see the [Knowledge Graph Manual](https://nfdi4objects.github.io/n4o-graph/) (in German).
 
 ## Table of Contents
 
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
   - [SPARQL](#sparql)
@@ -26,25 +26,28 @@ For background information see the [Knowledge Graph Manual](https://nfdi4objects
 - [Development](#development)
 - [License](#license)
 
-## Installation
+## Requirements
 
-Requires Python >= 3.5. Python modules are listed in `requirements.txt`.
-
-For running with docker you need a Docker image. By now it must be build locally [as described below](#development) but we are going to provide build images.
+Requires Python >= 3.5 to run from sources (Python modules are listed in `requirements.txt`) or Docker.
 
 A backend API (SPARQL and optional Neo4J/Cypher) must be available and [configured](#configuration).
 
+File system read access to the import staging area is required, if enabled via configuration.
+
 ## Installation
 
-Use [deployment method of your choice](https://flask.palletsprojects.com/en/2.0.x/deploying/#self-hosted-options) or Docker.
+Use Python flask [deployment method of your choice](https://flask.palletsprojects.com/en/2.0.x/deploying/#self-hosted-options)
+or Docker.
 
-A Docker container can be run with local configuration file mounted into the container, and access to the network enabled:
+Docker images are generated and [published at GitHub](https://github.com/nfdi4objects/n4o-graph-apis/pkgs/container/n4o-graph-apis) from the `main` branch. Alternatively build the image locally [as described below](#development).
+
+There is a [`docker-compose.yml`](docker-compose.yml) for deployment. If needed, it can be configured with a local file `.env`. This is work in progress and details may change!
 
 ~~~sh
-docker run --rm --net=host -p 8000:8000 -v ./config.yaml:/app/config.yaml:ro n4o-graph-apis
-~~~
-
-For deployment better use a file `docker-compose.yml` (will be documented later).
+docker compose create
+docker compose start
+docker compose stop
+~~~~
 
 ## Configuration
 
@@ -158,7 +161,11 @@ Please run `make lint` to detect Python coding style violations and `make fix` t
 
 To populate the configured knowledge graph databases with actual data, see the source code repository <https://github.com/nfdi4objects/n4o-import>.
 
-To locally build the Docker image run `make docker`.
+To locally build the Docker image run `make docker`. The container is named `n4o-graph-apis`, so it can be run for testing:
+
+~~~sh
+docker run --rm --net=host -p 8000:8000 -v ./config.yaml:/app/config.yaml:ro n4o-graph-apis
+~~~
 
 ## License
 

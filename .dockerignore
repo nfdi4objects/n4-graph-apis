@@ -1,9 +1,18 @@
 # sources not required in production
 tests
 Makefile
+requirements-dev.txt
+
+# Docker sources
+Dockerfile
+docker-compose.yaml
 
 # node
 node_modules
 eslint.config.js
 package.json
 package-lock.json
+
+# local files
+config.yaml
+stage
