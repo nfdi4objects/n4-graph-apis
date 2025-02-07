@@ -243,6 +243,9 @@ if __name__ == '__main__':
     except Exception:
         quit(f"SPARQL endpoint {endpoint} is not available!")
 
+    if config["stage"] and not os.path.isdir(config["stage"]):
+        quit(f"N4o import directory {config['stage']} is not available!")
+
     if "cypher" in config:
         # TODO: check if backend is alive, else exit
         print(f"Using Cypher backend {config['cypher']['uri']}")

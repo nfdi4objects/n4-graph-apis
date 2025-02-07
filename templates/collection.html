@@ -10,6 +10,9 @@
   Loaded into the graph at
   {{ graph.objects(URIRef(uri), URIRef("http://purl.org/dc/terms/issued")).__next__() }}
   with <a data-sparql-value="SELECT (COUNT(*) AS ?count) FROM <{{uri}}> {?s ?p ?o}">...</a> triples.
+  {% if stage %}
+  See <a href="{{ stage }}">import report</a>.
+  {% endif %}
 </p>
 <hr>
 {% set homepage = graph.objects(URIRef(uri), URIRef("http://xmlns.com/foaf/0.1/homepage")).__next__() %}
@@ -32,9 +35,6 @@ FROM <{{uri}}> WHERE {
   ?s ?property ?o
 } GROUP BY ?property ORDER BY DESC(?count)">used properties</a>.
 </p> 
-{% if stage %}
-<p>See <a href="{{ stage }}">import report</a>.</p>
-{% endif %}
 <hr><!-- TODO: syntax highlight RDF/Turtle -->
 <pre><code>
 {{graph.serialize()}}
