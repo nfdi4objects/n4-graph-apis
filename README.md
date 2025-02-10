@@ -1,5 +1,9 @@
 # n4o-graph-api
 
+[![License](https://img.shields.io/github/license/nfdi4objects/n4o-graph-apis.svg)](https://github.com/nfdi4objects/n4o-graph-apis/blob/master/LICENSE)
+[![Test](https://github.com/nfdi4objects/n4o-graph-apis/actions/workflows/test.yml/badge.svg)](https://github.com/nfdi4objects/n4o-graph-apis/actions/workflows/test.yml)
+[![Docker](https://img.shields.io/badge/Docker-ghcr.io%2Fnfdi4objects%2Fn4o--graph--apis-informational)]([https://github.com/gbv/jskos-server/blob/master/docker/README.md](https://github.com/nfdi4objects/n4o-graph-apis/pkgs/container/n4o-graph-apis))
+
 > API and minimal web interface to the NFDI4Objects Knowledge Graph (N4O KG)
 
 This repository implements public web APIs to the NFDI4Objects Knowledge Graph,
