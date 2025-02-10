@@ -25,8 +25,8 @@ For additional information see the [Knowledge Graph Manual](https://nfdi4objects
   - [Cypher](#cypher)
 - [Usage](#usage)
   - [SPARQL API](#sparql-api)
-  - [Property Graph API](#property-graph-api)
   - [Linked Open Data](#linked-open-data)
+  - [Property Graph API](#property-graph-api)
 - [Development](#development)
 - [License](#license)
 
@@ -85,51 +85,6 @@ The Cypher backend is optional. When using Neo4j (or compatible) make sure the d
 
 This webservice implements [SPARQL query API](https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/#query-operation) at `/api/sparl`. The query is transformed to a POST request and passed to the backend SPARQL endpoint.
 
-### Property Graph API
-
-The Property Graph API at `/api/cypher` expects a HTTP GET query parameter `query` with a Cypher query or a HTTP POST request with a Cypher query as request body. The return format is a (possibly empty) JSON array of result objects. On failure, an error object is returned. Each response objects is maps query variables to values. Each value is one of:
-
-- number, string, boolean, or null
-- array of values
-- [PG-JSONL](https://pg-format.github.io/specification/#pg-json) node or edge object for nodes and edges
-- [PG-JSON](https://pg-format.github.io/specification/#pg-jsonl) graph object for pathes
-
-The following examples use n4o-graph-apis application running at <https://graph.nfdi4objects.net/> for illustration. This URL will be changed! Use base URL
-<http://localhost:8000/> for testing a local installation.
-
-#### Query with Python
-
-```python
-import requests
-import json
-
-api = "https://graph.nfdi4objects.net/api/cypher"
-query = "MATCH (m:E16_Measurement) RETURN m LIMIT 2"
-results = requests.get(api, { "query": query }).json()
-```
-
-#### Query with JavaScript
-
-```js
-const api = "https://graph.nfdi4objects.net/api/cypher"
-const query = "MATCH (m:E16_Measurement) RETURN m LIMIT 2"
-results = await fetch(api, { query }).then(res => res.json())
-```
-
-#### Query with curl
-
-The Cypher query must be URL-escaped, this is done by using argument [--data-urlencode](https://curl.se/docs/manpage.html#--data-urlencode):
-
-```sh
-curl -G https://graph.nfdi4objects.net/api/cypher --data-urlencode 'query=MATCH (m:E16_Measurement) RETURN m LIMIT 2'
-```
-
-The Cypher query can also be passed from a file:
-
-```sh
-curl -G https://graph.nfdi4objects.net/api/cypher --data-urlencode 'query@queryfile.cypher'
-```
-
 ### Linked Open Data
 
 Information about collections, each identified by an URI starting with <https://graph.nfdi4objects.net/collection/>, can be retrieved as Linked Open Data (LOD) at path `/collection` in HTML and in RDF serializations. The data is retrieved via [SPARQL API](#sparql-api), so retrieving <https://graph.nfdi4objects.net/collection/1> results in the same data as this SPARQL query from graph <https://graph.nfdi4objects.net/collection/>:
@@ -141,6 +96,45 @@ DESCRIBE <https://graph.nfdi4objects.net/collection/1> FROM <https://graph.nfdi4
 The RDF serialization is determined via HTTP Content Negotiation or with optional query parameter `format`.
 
 Information about terminologies will be made available from <https://graph.nfdi4objects.net/terminology/>.
+
+### Property Graph API
+
+The Property Graph API at `/api/cypher` expects a HTTP GET query parameter `query` with a Cypher query or a HTTP POST request with a Cypher query as request body. The return format is a (possibly empty) JSON array of result objects. On failure, an error object is returned. Each response objects is maps query variables to values. Each value is one of:
+
+- number, string, boolean, or null
+- array of values
+- [PG-JSONL](https://pg-format.github.io/specification/#pg-json) node or edge object for nodes and edges
+- [PG-JSON](https://pg-format.github.io/specification/#pg-jsonl) graph object for pathes
+
+The following examples use n4o-graph-apis application running at <https://graph.nfdi4objects.net/> for illustration. Use base URL
+<http://localhost:8000/> for testing a local installation:
+
+```python
+import requests
+import json
+
+api = "https://graph.nfdi4objects.net/api/cypher"
+query = "MATCH (m:E16_Measurement) RETURN m LIMIT 2"
+results = requests.get(api, { "query": query }).json()
+```
+
+```js
+const api = "https://graph.nfdi4objects.net/api/cypher"
+const query = "MATCH (m:E16_Measurement) RETURN m LIMIT 2"
+results = await fetch(api, { query }).then(res => res.json())
+```
+
+To query with curl, the Cypher query must be URL-escaped, this is done by using argument [--data-urlencode](https://curl.se/docs/manpage.html#--data-urlencode):
+
+```sh
+curl -G https://graph.nfdi4objects.net/api/cypher --data-urlencode 'query=MATCH (m:E16_Measurement) RETURN m LIMIT 2'
+```
+
+The Cypher query can also be passed from a file:
+
+```sh
+curl -G https://graph.nfdi4objects.net/api/cypher --data-urlencode 'query@queryfile.cypher'
+```
 
 ## Development
 
