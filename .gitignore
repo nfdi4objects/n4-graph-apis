@@ -2,6 +2,7 @@
 __pycache__/
 pyvenv.cfg
 .venv/
+.coverage
 
 # node
 node_modules
